@@ -22,7 +22,7 @@ export default function AddLocationScreen({ navigation }) {
     }
 
     const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      mediaTypes: ['images'],
       allowsEditing: true,
       aspect: [4, 3],
       quality: 0.8,
@@ -73,10 +73,10 @@ export default function AddLocationScreen({ navigation }) {
           <View style={styles.stepNumber}><Text style={styles.stepNumberText}>2</Text></View>
           <View style={styles.stepCopy}>
             <Text style={styles.stepTitle}>Mark the location</Text>
-            <Text style={styles.stepHint}>Press and hold the map to drop a pin.</Text>
+            <Text style={styles.stepHint}>Tap or press and hold the map to drop a pin.</Text>
           </View>
         </View>
-        <GuessMap selectedLocation={location} onLocationChange={setLocation} />
+        <GuessMap guess={location} onLocationChange={setLocation} />
         <Text style={styles.locationStatus}>
           {location
             ? `Pin set · ${location.latitude.toFixed(5)}, ${location.longitude.toFixed(5)}`

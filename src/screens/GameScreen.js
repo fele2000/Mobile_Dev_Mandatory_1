@@ -101,7 +101,7 @@ export default function GameScreen({ navigation }) {
               <View>
                 <Text style={styles.sectionTitle}>Choose a spot</Text>
                 <Text style={styles.sectionHint}>
-                  {result ? 'The green pin shows the photo location.' : 'Press and hold the map to drop a pin.'}
+                  {result ? 'The green pin shows the photo location.' : 'Tap or press and hold the map to drop a pin.'}
                 </Text>
               </View>
               {guess && !result && <Text style={styles.pinStatus}>PIN SET</Text>}

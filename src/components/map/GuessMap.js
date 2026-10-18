@@ -1,52 +1,65 @@
-// Viser kortet over KEA og håndterer lange tryk og markører.
-import { useState } from "react"
-import { StyleSheet, View } from "react-native"
-import MapView, { Marker } from "react-native-maps"
+import { StyleSheet, View } from 'react-native';
+import MapView, { Marker } from 'react-native-maps';
+import { INITIAL_REGION } from '../../constants/map';
 
-const EKLocation = {
+const KEA_LOCATION = {
   latitude: 55.691513,
-  longitude: 12.555128
-}
+  longitude: 12.555128,
+};
 
-
-export default function GuessMap() {
-  const [guess, setGuess] = useState(null)
-
-  function handleGuess(event) {
-    setGuess(event.nativeEvent.coordinate)
-  }
+export default function GuessMap({
+  guess = null,
+  answer = null,
+  showAnswer = false,
+  disabled = false,
+  onLocationChange = () => {},
+}) {
+  const handleLocationChange = (event) => {
+    if (disabled) return;
+    onLocationChange(event.nativeEvent.coordinate);
+  };
 
   return (
-    <View style= {styles.container}>
-      <MapView 
-      style={styles.map}
-      mapType="hybrid"
-      initialRegion={{
-      ...EKLocation,
-      latitudeDelta: 0.002,
-      longitudeDelta: 0.002 }}
-      onPress={handleGuess}
+    <View style={styles.container}>
+      <MapView
+        style={styles.map}
+        mapType="hybrid"
+        initialRegion={INITIAL_REGION}
+        onPress={handleLocationChange}
+        onLongPress={handleLocationChange}
       >
-        <Marker coordinate={EKLocation}
-        title="EK Guldbergsgade"
-        description="Guldbergsgade 29N, 2200 København N"
+        <Marker
+          coordinate={KEA_LOCATION}
+          title="KEA Guldbergsgade"
+          description="Guldbergsgade 29N, 2200 Copenhagen N"
         />
 
         {guess && (
           <Marker
-          coordinate={guess}
-          title="Dit gæt"
-          pinColor="blue"
-        />
-        )
-      }
-      </MapView>
+            coordinate={guess}
+            title="Your guess"
+            pinColor="blue"
+          />
+        )}
 
+        {showAnswer && answer && (
+          <Marker
+            coordinate={{ latitude: answer.latitude, longitude: answer.longitude }}
+            title="Photo location"
+            pinColor="green"
+          />
+        )}
+      </MapView>
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1 },
-  map: { flex: 1 }
-})
+  container: {
+    width: '100%',
+    height: 280,
+    borderRadius: 18,
+    overflow: 'hidden',
+  },
+  map: { flex: 1 },
+});

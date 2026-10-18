@@ -37,7 +37,7 @@ export default function ScorePanel({
         <>
           <Text style={styles.eyebrow}>MAKE YOUR GUESS</Text>
           <Text style={styles.instruction}>
-            {guessPlaced ? 'Marker placed. Ready to lock in your guess?' : 'Long-press the map to place your guess.'}
+            {guessPlaced ? 'Marker placed. Ready to lock in your guess?' : 'Tap or press and hold the map to place your guess.'}
           </Text>
           <ActionButton title="Lock in my guess" onPress={onSubmitGuess} disabled={!guessPlaced} />
         </>
