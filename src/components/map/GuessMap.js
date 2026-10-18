@@ -20,10 +20,11 @@ export default function GuessMap() {
     <View style= {styles.container}>
       <MapView 
       style={styles.map}
+      mapType="hybrid"
       initialRegion={{
       ...EKLocation,
-      latitudeDelta: 0.0008,
-      longitudeDelta: 0.0008 }}
+      latitudeDelta: 0.002,
+      longitudeDelta: 0.002 }}
       onPress={handleGuess}
       >
         <Marker coordinate={EKLocation}
@@ -39,8 +40,6 @@ export default function GuessMap() {
         />
         )
       }
-
-
       </MapView>
 
     </View>
