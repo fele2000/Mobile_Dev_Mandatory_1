@@ -22,8 +22,6 @@ src/
     scoring.js                      Rene funktioner til afstand og point
   constants/
     map.js                          Kortkonstanter og startregion over KEA
-  data/
-    mockRounds.js                   Testrunder med det fælles dataformat
 assets/
   rounds/
     .gitkeep                        Plads til lokale testfotos

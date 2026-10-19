@@ -1,14 +1,3 @@
-/**
- * AppNavigator.js – Navigation mellem appens skærme.
- *
- * Vi bruger React Navigations "native stack": skærme lægges oven på hinanden
- * som en stak kort. navigation.navigate('AddLocation') lægger en ny skærm
- * øverst, og navigation.goBack() fjerner den igen, så man er tilbage på Game.
- *
- * Appen har to skærme:
- *  - Game:        selve spillet, hvor man gætter hvor et foto er taget.
- *  - AddLocation: her opretter man en ny runde (foto + markør på kortet).
- */
 import { useEffect, useState } from 'react';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
@@ -21,16 +10,17 @@ import LoginScreen from '../screens/LoginScreen';
 import { COLORS } from '../constants/theme';
 import { auth } from '../services/firebase';
 
-// Opretter et stack-objekt med en Navigator- og en Screen-komponent.
+// Stack navigation: skærmene lægges oven på hinanden.
+// navigate('AddLocation') lægger en ny skærm øverst, goBack() fjerner den igen.
 const Stack = createNativeStackNavigator();
 
 export default function AppNavigator() {
   const [user, setUser] = useState(null);
   const [isAuthLoading, setIsAuthLoading] = useState(true);
 
+  // onAuthStateChanged lytter på Firebase og kaldes ved login, logout og når appen starter.
+  // Funktionen den returnerer bruges til at stoppe lytteren igen når komponenten forsvinder.
   useEffect(() => {
-    // Firebase kalder også denne funktion efter et vellykket login eller logout.
-    // Først når den har svaret én gang, ved vi, hvilken skærm der skal vises.
     const unsubscribe = onAuthStateChanged(auth, (nextUser) => {
       setUser(nextUser);
       setIsAuthLoading(false);
@@ -39,33 +29,31 @@ export default function AppNavigator() {
     return unsubscribe;
   }, []);
 
+  // Vis en spinner indtil Firebase har svaret, ellers blinker login-skærmen kort
   if (isAuthLoading) {
     return <View style={styles.loadingScreen}><ActivityIndicator color={COLORS.brand} size="large" /></View>;
   }
 
   return (
-    // <> ... </> er et React Fragment: grupperer elementer uden at lave en ekstra View.
     <>
-      {/* Mørk tekst/ikoner i telefonens statuslinje, da vores baggrund er lys. */}
       <StatusBar style="dark" />
-      {/* NavigationContainer holder styr på navigationens tilstand og skal omslutte alle navigators. */}
       <NavigationContainer>
+        {/* key nulstiller stacken ved login/logout, ellers kunne login-skærmen blive hængende */}
         <Stack.Navigator
           key={user?.uid ?? 'signed-out'}
           screenOptions={{
-            headerShown: false, // Vi skjuler standard-headeren og bruger vores egen ScreenHeader.
-            contentStyle: { backgroundColor: COLORS.background }, // Fælles baggrundsfarve på alle skærme.
-            animation: 'slide_from_right', // Nye skærme glider ind fra højre.
+            headerShown: false, // vi bruger vores egen ScreenHeader i stedet
+            contentStyle: { backgroundColor: COLORS.background },
+            animation: 'slide_from_right',
           }}
         >
-          {/* Ruterne skiftes sammen med Firebase-sessionen. `key` ovenfor nulstiller
-              navigatoren, så en tidligere Login-skærm aldrig bliver hængende. */}
+          {/* Er man logget ind ser man spillet, ellers kun login-skærmen */}
           {user ? (
             <>
               <Stack.Screen name="Game" component={GameScreen} />
               <Stack.Screen name="AddLocation" component={AddLocationScreen} />
             </>
-           ) : <Stack.Screen name="Login" component={LoginScreen} />}
+          ) : <Stack.Screen name="Login" component={LoginScreen} />}
         </Stack.Navigator>
       </NavigationContainer>
     </>
