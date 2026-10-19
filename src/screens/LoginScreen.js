@@ -6,6 +6,7 @@ import ActionButton from '../components/ui/ActionButton';
 import { COLORS, SPACING } from '../constants/theme';
 import { auth } from '../services/firebase';
 
+// Firebase sender fejlkoder tilbage, dem oversætter vi til danske beskeder
 const firebaseMessages = {
   'auth/invalid-email': 'Skriv en gyldig e-mailadresse.',
   'auth/invalid-credential': 'E-mail eller adgangskode er forkert.',
@@ -27,6 +28,8 @@ export default function LoginScreen() {
       return;
     }
     setIsLoading(true);
+    // Vi navigerer ikke selv videre her. Når login lykkes kalder Firebase
+    // onAuthStateChanged i AppNavigator, som så skifter til spillet.
     try {
       if (isCreatingAccount) await createUserWithEmailAndPassword(auth, cleanEmail, password);
       else await signInWithEmailAndPassword(auth, cleanEmail, password);
@@ -40,12 +43,14 @@ export default function LoginScreen() {
   const creating = isCreatingAccount;
   return (
     <SafeAreaView style={styles.safeArea} edges={['top', 'bottom']}>
+      {/* Skubber indholdet op så tastaturet ikke dækker inputfelterne (mest et problem på iOS) */}
       <KeyboardAvoidingView style={styles.flex} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
         <ScrollView contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
           <View style={styles.logo}><Text style={styles.logoText}>K</Text></View>
           <Text style={styles.eyebrow}>KEA GEO</Text>
           <Text style={styles.title}>{creating ? 'Opret konto' : 'Log ind'}</Text>
           <View style={styles.form}>
+            {/* Controlled inputs: value kommer fra state og onChangeText opdaterer state */}
             <Text style={styles.label}>E-mail</Text>
             <TextInput value={email} onChangeText={setEmail} style={styles.input} placeholder="navn@eksempel.dk" placeholderTextColor={COLORS.muted} autoCapitalize="none" autoCorrect={false} keyboardType="email-address" textContentType="emailAddress" autoComplete="email" accessibilityLabel="E-mail" />
             <Text style={styles.label}>Adgangskode</Text>

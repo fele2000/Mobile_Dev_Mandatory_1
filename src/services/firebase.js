@@ -4,6 +4,7 @@ import { getAuth, getReactNativePersistence, initializeAuth } from 'firebase/aut
 import { getFirestore } from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
 
+// Config fra Firebase-konsollen. API-nøglen ligger i .env
 const firebaseConfig = {
   apiKey: process.env.EXPO_PUBLIC_FIREBASE_API_KEY,
   authDomain: "kea-geo-guesser.firebaseapp.com",
@@ -14,6 +15,7 @@ const firebaseConfig = {
   measurementId: "G-XCFBJMLHM1"
 };
 
+// Firebase må kun initialiseres én gang, så genbrug appen hvis den allerede findes
 const app = getApps().length ? getApps()[0] : initializeApp(firebaseConfig);
 
 // AsyncStorage gør, at brugeren stadig er logget ind efter en app-genstart.
@@ -25,6 +27,7 @@ try {
   auth = getAuth(app);
 }
 
+// auth = login, db = Firestore (data om runderne), storage = billedfiler
 export { auth };
 export const db = getFirestore(app);
 export const storage = getStorage(app);
