@@ -5,7 +5,7 @@ import { getFirestore } from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
 
 const firebaseConfig = {
-  apiKey: "AIzaSyC_xVVpgg9LwzWEuxanz5oxyK_sylLUp84",
+  apiKey: process.env.EXPO_PUBLIC_FIREBASE_API_KEY,
   authDomain: "kea-geo-guesser.firebaseapp.com",
   projectId: "kea-geo-guesser",
   storageBucket: "kea-geo-guesser.firebasestorage.app",
