@@ -44,7 +44,7 @@ export default function LoginScreen() {
   return (
     <SafeAreaView style={styles.safeArea} edges={['top', 'bottom']}>
       {/* Skubber indholdet op så tastaturet ikke dækker inputfelterne (mest et problem på iOS) */}
-      <KeyboardAvoidingView style={styles.flex} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
+      <KeyboardAvoidingView style={styles.flex} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
         <ScrollView contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
           <View style={styles.logo}><Text style={styles.logoText}>K</Text></View>
           <Text style={styles.eyebrow}>KEA GEO</Text>
