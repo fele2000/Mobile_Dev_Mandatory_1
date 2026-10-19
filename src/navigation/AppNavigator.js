@@ -41,7 +41,6 @@ export default function AppNavigator() {
       {/* NavigationContainer holder styr på navigationens tilstand og skal omslutte alle navigators. */}
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName="Game" // Skærmen der vises, når appen åbner.
           screenOptions={{
             headerShown: false, // Vi skjuler standard-headeren og bruger vores egen ScreenHeader.
             contentStyle: { backgroundColor: COLORS.background }, // Fælles baggrundsfarve på alle skærme.
