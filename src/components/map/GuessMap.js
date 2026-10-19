@@ -28,16 +28,9 @@ export default function GuessMap({
         onPress={handleLocationChange}
         onLongPress={handleLocationChange}
       >
-        <Marker
-          coordinate={KEA_LOCATION}
-          title="KEA Guldbergsgade"
-          description="Guldbergsgade 29N, 2200 Copenhagen N"
-        />
-
         {guess && (
           <Marker
             coordinate={guess}
-            title="Your guess"
             pinColor="blue"
           />
         )}
