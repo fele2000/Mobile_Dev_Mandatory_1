@@ -65,7 +65,6 @@ export default function GuessMap({
         {guess && (
           <Marker
             coordinate={guess}
-            title="Your guess"
             pinColor="blue"
           />
         )}

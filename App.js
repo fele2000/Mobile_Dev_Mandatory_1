@@ -1,7 +1,7 @@
 /**
  * App.js – Rod-komponenten for hele appen.
  *
- * Vi holder bevidst denne fil lille (se README). Den pakker blot hele appen ind i:
+ * Vi holder bevidst denne fil lille. Den pakker blot hele appen ind i:
  *  - SafeAreaProvider: giver resten af appen besked om telefonens "sikre områder"
  *    (notch, statuslinje, home-indikator), så indhold ikke gemmer sig bag dem.
  *  - AppNavigator: vores navigation, som bestemmer hvilken skærm der vises.

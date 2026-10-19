@@ -1,13 +1,30 @@
-/**
- * firebase.js – Forbindelsen til Firebase (pladsholder).
- *
- * Planen er, at filen skal:
- *  1. Indeholde Firebase-webkonfigurationen (apiKey, projectId osv.).
- *  2. Kalde initializeApp(...) fra 'firebase/app'.
- *  3. Eksportere Firestore (database til runder) og Storage (lager til fotos).
- *
- * Indtil det er gjort, eksporteres null, så andre filer kan importere
- * navnene uden at appen crasher. Ingen del af appen bruger dem endnu.
- */
-export const db = null; // Skal blive: getFirestore(app)
-export const storage = null; // Skal blive: getStorage(app)
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { getApps, initializeApp } from 'firebase/app';
+import { getAuth, getReactNativePersistence, initializeAuth } from 'firebase/auth';
+import { getFirestore } from 'firebase/firestore';
+import { getStorage } from 'firebase/storage';
+
+const firebaseConfig = {
+  apiKey: "AIzaSyC_xVVpgg9LwzWEuxanz5oxyK_sylLUp84",
+  authDomain: "kea-geo-guesser.firebaseapp.com",
+  projectId: "kea-geo-guesser",
+  storageBucket: "kea-geo-guesser.firebasestorage.app",
+  messagingSenderId: "418822179377",
+  appId: "1:418822179377:web:a88f17af4da5ea06522310",
+  measurementId: "G-XCFBJMLHM1"
+};
+
+const app = getApps().length ? getApps()[0] : initializeApp(firebaseConfig);
+
+// AsyncStorage gør, at brugeren stadig er logget ind efter en app-genstart.
+let auth;
+try {
+  auth = initializeAuth(app, { persistence: getReactNativePersistence(AsyncStorage) });
+} catch (error) {
+  // Under Fast Refresh er Auth ofte allerede initialiseret.
+  auth = getAuth(app);
+}
+
+export { auth };
+export const db = getFirestore(app);
+export const storage = getStorage(app);

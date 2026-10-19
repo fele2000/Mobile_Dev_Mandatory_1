@@ -17,9 +17,10 @@
  * komponenterne via props. Komponenterne viser kun det, de får.
  */
 import { useCallback, useState } from 'react';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Alert, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { signOut } from 'firebase/auth';
 import GuessMap from '../components/map/GuessMap';
 import PhotoCard from '../components/game/PhotoCard';
 import ScorePanel from '../components/game/ScorePanel';
@@ -28,6 +29,7 @@ import ScreenHeader from '../components/ui/ScreenHeader';
 import { COLORS, SPACING } from '../constants/theme';
 import { getRounds } from '../services/roundsService';
 import { calculateDistance, calculatePoints } from '../utils/scoring';
+import { auth } from '../services/firebase';
 
 // "navigation" gives automatisk til alle skærme, der er registreret i AppNavigator.
 export default function GameScreen({ navigation }) {
@@ -87,6 +89,14 @@ export default function GameScreen({ navigation }) {
     setTotalScore(0);
   };
 
+  const logOut = async () => {
+    try {
+      await signOut(auth);
+    } catch (error) {
+      Alert.alert('Kunne ikke logge ud', 'Prøv igen om lidt.');
+    }
+  };
+
   return (
     // SafeAreaView med edges={['top']}: kun luft i toppen (notch/statuslinje); bunden håndteres af ScrollView.
     <SafeAreaView style={styles.safeArea} edges={['top']}>
@@ -96,6 +106,12 @@ export default function GameScreen({ navigation }) {
           actionLabel="+ Add spot"
           onAction={() => navigation.navigate('AddLocation')}
         />
+        <View style={styles.accountRow}>
+          <Text style={styles.accountEmail} numberOfLines={1}>{auth.currentUser?.email}</Text>
+          <Pressable onPress={logOut} accessibilityRole="button" style={styles.logOutButton}>
+            <Text style={styles.logOutText}>Log ud</Text>
+          </Pressable>
+        </View>
 
         {/* Indlejret ternary vælger én af tre tilstande: tom / færdig / spiller. */}
         {rounds.length === 0 ? (
@@ -183,6 +199,10 @@ const styles = StyleSheet.create({
   safeArea: { flex: 1, backgroundColor: COLORS.background },
   content: { paddingHorizontal: SPACING.screen, paddingBottom: 28, gap: 16 }, // gap = afstand mellem alle børn.
   // Tom tilstand
+  accountRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: -12 },
+  accountEmail: { flex: 1, color: COLORS.muted, fontSize: 12, marginRight: 12 },
+  logOutButton: { minHeight: 44, justifyContent: 'center', paddingHorizontal: 4 },
+  logOutText: { color: COLORS.brandDark, fontSize: 13, fontWeight: '700' },
   emptyCard: { backgroundColor: COLORS.surface, borderRadius: 24, padding: 24, alignItems: 'center', marginTop: 28 },
   emptyIcon: { width: 72, height: 72, borderRadius: 24, backgroundColor: COLORS.brandLight, alignItems: 'center', justifyContent: 'center', marginBottom: 18 },
   emptyEmoji: { fontSize: 32 },
