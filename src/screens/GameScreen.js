@@ -103,7 +103,7 @@ export default function GameScreen({ navigation }) {
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
         {/* Topbjælke med knap til at oprette et nyt sted. */}
         <ScreenHeader
-          actionLabel="+ Add spot"
+          actionLabel="+ Tilføj sted"
           onAction={() => navigation.navigate('AddLocation')}
         />
         <View style={styles.accountRow}>
@@ -118,21 +118,17 @@ export default function GameScreen({ navigation }) {
           // Tilstand A: ingen runder endnu.
           <View style={styles.emptyCard}>
             <View style={styles.emptyIcon}><Text style={styles.emptyEmoji}>📍</Text></View>
-            <Text style={styles.emptyTitle}>Your campus game starts here</Text>
             <Text style={styles.emptyText}>
-              Add a photo and mark where it was taken. Then your friends can guess the spot.
+              Tilføj et foto, og markér hvor det blev taget. Så kan dine venner gætte stedet.
             </Text>
-            <ActionButton title="Add your first spot" onPress={() => navigation.navigate('AddLocation')} />
-            <Text style={styles.helper}>It only takes a photo and one map pin.</Text>
+            <ActionButton title="Tilføj dit første sted" onPress={() => navigation.navigate('AddLocation')} />
           </View>
         ) : sessionComplete ? (
           // Tilstand B: alle runder er spillet – vis slutresultat.
           <View style={styles.completeCard}>
-            <Text style={styles.completeEmoji}>🎉</Text>
-            <Text style={styles.completeTitle}>Campus explored!</Text>
-            <Text style={styles.completeText}>You scored {totalScore} points across {rounds.length} locations.</Text>
-            <ActionButton title="Play again" onPress={replay} />
-            <ActionButton title="Add another spot" variant="secondary" onPress={() => navigation.navigate('AddLocation')} />
+            <Text style={styles.completeText}>Du fik {totalScore} point på {rounds.length} sted(er).</Text>
+            <ActionButton title="Spil igen" onPress={replay} />
+            <ActionButton title="Tilføj endnu et sted" variant="secondary" onPress={() => navigation.navigate('AddLocation')} />
           </View>
         ) : (
           // Tilstand C: en runde er i gang.
@@ -140,12 +136,12 @@ export default function GameScreen({ navigation }) {
             {/* Mørk bjælke med nuværende score og rundenummer. */}
             <View style={styles.scoreStrip}>
               <View>
-                <Text style={styles.stripLabel}>CURRENT SCORE</Text>
+                <Text style={styles.stripLabel}>NUVÆRENDE SCORE</Text>
                 <Text style={styles.stripScore}>{totalScore}</Text>
               </View>
               <View style={styles.roundBadge}>
                 {/* +1 fordi index starter ved 0, men mennesker tæller fra 1. */}
-                <Text style={styles.roundText}>ROUND {roundIndex + 1} OF {rounds.length}</Text>
+                <Text style={styles.roundText}>RUNDE {roundIndex + 1} AF {rounds.length}</Text>
               </View>
             </View>
 
@@ -158,14 +154,14 @@ export default function GameScreen({ navigation }) {
 
             <View style={styles.sectionHeading}>
               <View>
-                <Text style={styles.sectionTitle}>Choose a spot</Text>
+                <Text style={styles.sectionTitle}>Vælg et sted</Text>
                 {/* Hjælpeteksten skifter, når resultatet vises. */}
                 <Text style={styles.sectionHint}>
-                  {result ? 'The green pin shows the photo location.' : 'Tap or press and hold the map to drop a pin.'}
+                  {result ? 'Den grønne markør viser, hvor fotoet blev taget.' : 'Tryk eller hold fingeren på kortet for at sætte en markør.'}
                 </Text>
               </View>
               {/* Lille statusmærke, når en markør er sat, men endnu ikke låst. */}
-              {guess && !result && <Text style={styles.pinStatus}>PIN SET</Text>}
+              {guess && !result && <Text style={styles.pinStatus}>MARKØR SAT</Text>}
             </View>
 
             {/* Kortet: viser gættet, og efter låsning det rigtige svar. Låses når resultatet vises. */}
@@ -188,7 +184,7 @@ export default function GameScreen({ navigation }) {
             />
           </>
         )}
-        <Text style={styles.footer}>KEA GULDBERGGSGADE · COPENHAGEN</Text>
+        <Text style={styles.footer}>KEA GULDBERGSGADE · KØBENHAVN</Text>
       </ScrollView>
     </SafeAreaView>
   );

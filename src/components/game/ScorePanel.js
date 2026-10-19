@@ -33,37 +33,37 @@ export default function ScorePanel({
       {result ? (
         // Tilstand 2: resultatet af runden.
         <>
-          <Text style={styles.eyebrow}>ROUND RESULT</Text>
+          <Text style={styles.eyebrow}>RESULTAT</Text>
           <View style={styles.resultRow}>
             {/* Optjente point i denne runde. */}
             <View>
               <Text style={styles.points}>+{result.points}</Text>
-              <Text style={styles.label}>points earned</Text>
+              <Text style={styles.label}>optjente point</Text>
             </View>
             <View style={styles.divider} />
             {/* Afstanden fra gættet til det rigtige sted. */}
             <View>
               <Text style={styles.distance}>{formatDistance(result.distance)}</Text>
-              <Text style={styles.label}>from the spot</Text>
+              <Text style={styles.label}>fra stedet</Text>
             </View>
             {/* Samlet score, skubbet ud til højre kant. */}
             <View style={styles.totalBox}>
               <Text style={styles.total}>{totalScore}</Text>
-              <Text style={styles.totalLabel}>TOTAL</Text>
+              <Text style={styles.totalLabel}>I ALT</Text>
             </View>
           </View>
           {/* På sidste runde fører knappen til slutskærmen i stedet for næste runde. */}
-          <ActionButton title={isLastRound ? 'See final score' : 'Next location'} onPress={onNextRound} />
+          <ActionButton title={isLastRound ? 'Se slutresultatet' : 'Næste sted'} onPress={onNextRound} />
         </>
       ) : (
         // Tilstand 1: spilleren skal sætte/låse sit gæt.
         <>
-          <Text style={styles.eyebrow}>MAKE YOUR GUESS</Text>
+          <Text style={styles.eyebrow}>SÆT DIT GÆT</Text>
           <Text style={styles.instruction}>
-            {guessPlaced ? 'Marker placed. Ready to lock in your guess?' : 'Tap or press and hold the map to place your guess.'}
+            {guessPlaced ? 'Markør sat. Er du klar til at låse dit gæt?' : 'Tryk eller hold fingeren på kortet for at placere dit gæt.'}
           </Text>
           {/* Knappen er deaktiveret, indtil der er sat en markør. */}
-          <ActionButton title="Lock in my guess" onPress={onSubmitGuess} disabled={!guessPlaced} />
+          <ActionButton title="Lås mit gæt" onPress={onSubmitGuess} disabled={!guessPlaced} />
         </>
       )}
     </View>

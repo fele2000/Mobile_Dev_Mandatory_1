@@ -16,7 +16,7 @@ export default function ScreenHeader({ onBack, actionLabel, onAction }) {
     <View style={styles.row}>
       {/* Venstre side: tilbage-knap på underskærme, ellers app-logoet. */}
       {onBack ? (
-        <Pressable onPress={onBack} style={styles.back} accessibilityRole="button" accessibilityLabel="Go back">
+        <Pressable onPress={onBack} style={styles.back} accessibilityRole="button" accessibilityLabel="Gå tilbage">
           <Text style={styles.backText}>‹</Text>
         </Pressable>
       ) : (
@@ -25,7 +25,6 @@ export default function ScreenHeader({ onBack, actionLabel, onAction }) {
       {/* Midten: appens navn. flex: 1 gør, at den fylder pladsen mellem venstre og højre. */}
       <View style={styles.brand}>
         <Text style={styles.brandName}>KEA GEO</Text>
-        <Text style={styles.brandSub}>CAMPUS EXPLORER</Text>
       </View>
       {/* Højre side: handlingsknap, eller en tom View så layoutet forbliver ens. */}
       {actionLabel ? (

@@ -36,7 +36,7 @@ export default function AddLocationScreen({ navigation }) {
     // Spørg først om lov til at tilgå fotos (påkrævet på iOS og nyere Android).
     const permission = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (!permission.granted) {
-      Alert.alert('Photo access needed', 'Allow photo library access to choose a campus photo.');
+      Alert.alert('Adgang til fotos er nødvendig', 'Giv adgang til dit fotobibliotek for at vælge et foto.');
       return; // Stop her, hvis brugeren afviste.
     }
 
@@ -60,7 +60,7 @@ export default function AddLocationScreen({ navigation }) {
       await addRound({ imageUrl: photo.uri, latitude: location.latitude, longitude: location.longitude });
       navigation.goBack(); // Tilbage til GameScreen, som henter runderne igen via useFocusEffect.
     } catch (error) {
-      Alert.alert('Could not save this spot', 'Please try again.');
+      Alert.alert('Kunne ikke gemme dette sted', 'Prøv venligst igen.');
     } finally {
       // finally kører altid – både ved succes og fejl – så spinneren altid stopper.
       setSaving(false);
@@ -73,51 +73,48 @@ export default function AddLocationScreen({ navigation }) {
         {/* Topbjælke med tilbage-knap (onBack gør, at ScreenHeader viser "‹" i stedet for logoet). */}
         <ScreenHeader onBack={() => navigation.goBack()} />
         <View style={styles.intro}>
-          <Text style={styles.eyebrow}>BUILD YOUR CAMPUS GAME</Text>
-          <Text style={styles.title}>Add a location</Text>
-          <Text style={styles.description}>Choose a photo, then mark the place where it was taken.</Text>
+          <Text style={styles.title}>Tilføj et sted</Text>
+          <Text style={styles.description}>Vælg et foto, og markér derefter stedet, hvor det blev taget.</Text>
         </View>
 
         {/* ---------- Trin 1: vælg foto ---------- */}
         <View style={styles.stepHeader}>
           <View style={styles.stepNumber}><Text style={styles.stepNumberText}>1</Text></View>
           <View style={styles.stepCopy}>
-            <Text style={styles.stepTitle}>Choose a photo</Text>
-            <Text style={styles.stepHint}>Pick an image from your library.</Text>
+            <Text style={styles.stepTitle}>Vælg et foto</Text>
+            <Text style={styles.stepHint}>Vælg et billede fra dit bibliotek.</Text>
           </View>
         </View>
         {/* Er der valgt et foto, vises det med mulighed for at skifte; ellers kun en vælg-knap. */}
         {photo ? (
           <View style={styles.photoFrame}>
             <Image source={{ uri: photo.uri }} style={styles.photo} resizeMode="cover" />
-            <ActionButton title="Choose a different photo" variant="secondary" onPress={choosePhoto} />
+            <ActionButton title="Vælg et andet foto" variant="secondary" onPress={choosePhoto} />
           </View>
         ) : (
-          <ActionButton title="＋  Select photo" variant="secondary" onPress={choosePhoto} />
+          <ActionButton title="＋  Vælg foto" variant="secondary" onPress={choosePhoto} />
         )}
 
         {/* ---------- Trin 2: sæt markør ---------- */}
         <View style={styles.stepHeader}>
           <View style={styles.stepNumber}><Text style={styles.stepNumberText}>2</Text></View>
           <View style={styles.stepCopy}>
-            <Text style={styles.stepTitle}>Mark the location</Text>
-            <Text style={styles.stepHint}>Tap or press and hold the map to drop a pin.</Text>
+            <Text style={styles.stepTitle}>Markér stedet</Text>
+            <Text style={styles.stepHint}>Tryk eller hold fingeren på kortet for at sætte en markør.</Text>
           </View>
         </View>
         {/* Samme kortkomponent som i spillet – her gemmer markøren stedet for det nye foto. */}
         <GuessMap guess={location} onLocationChange={setLocation} />
         {/* Viser de valgte koordinater med 5 decimaler (ca. 1 meters præcision). */}
-        <Text style={styles.locationStatus}>
-          {location
-            ? `Pin set · ${location.latitude.toFixed(5)}, ${location.longitude.toFixed(5)}`
-            : 'No location selected yet'}
-        </Text>
+        {!location && (
+  <Text style={styles.locationStatus}>Intet sted valgt endnu</Text>
+)}
 
         {/* ---------- Gem ---------- */}
-        <ActionButton title="Save location" onPress={saveLocation} disabled={!canSave} loading={saving} />
+        <ActionButton title="Gem sted" onPress={saveLocation} disabled={!canSave} loading={saving} />
         {/* Forklarer hvorfor knappen er grå, indtil begge trin er udført. */}
-        {!canSave && <Text style={styles.saveHint}>Add both a photo and a map pin to continue.</Text>}
-        <Text style={styles.persistenceHint}>Spots stay available until you close the app.</Text>
+        {!canSave && <Text style={styles.saveHint}>Tilføj både et foto og en markør på kortet for at fortsætte.</Text>}
+
       </ScrollView>
     </SafeAreaView>
   );

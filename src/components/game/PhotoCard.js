@@ -23,8 +23,7 @@ export default function PhotoCard({ imageUrl, roundNumber, totalRounds }) {
       {/* Overskrift til venstre og rundetæller ("2 / 5") til højre. */}
       <View style={styles.heading}>
         <View>
-          <Text style={styles.eyebrow}>YOUR CHALLENGE</Text>
-          <Text style={styles.title}>Where was this taken?</Text>
+          <Text style={styles.title}>Hvor blev dette taget?</Text>
         </View>
         <Text style={styles.counter}>{roundNumber} / {totalRounds}</Text>
       </View>
@@ -34,8 +33,8 @@ export default function PhotoCard({ imageUrl, roundNumber, totalRounds }) {
       ) : (
         <View style={styles.placeholder}>
           <Text style={styles.placeholderIcon}>📷</Text>
-          <Text style={styles.placeholderTitle}>Your photo goes here</Text>
-          <Text style={styles.placeholderText}>Add a location to start building your game.</Text>
+          <Text style={styles.placeholderTitle}>Dit foto vises her</Text>
+          <Text style={styles.placeholderText}>Tilføj et sted for at begynde at et spil.</Text>
         </View>
       )}
     </View>

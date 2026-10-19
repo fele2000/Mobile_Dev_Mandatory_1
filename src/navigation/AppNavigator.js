@@ -25,11 +25,21 @@ import { auth } from '../services/firebase';
 const Stack = createNativeStackNavigator();
 
 export default function AppNavigator() {
-  const [user, setUser] = useState(undefined);
+  const [user, setUser] = useState(null);
+  const [isAuthLoading, setIsAuthLoading] = useState(true);
 
-  useEffect(() => onAuthStateChanged(auth, setUser), []);
+  useEffect(() => {
+    // Firebase kalder også denne funktion efter et vellykket login eller logout.
+    // Først når den har svaret én gang, ved vi, hvilken skærm der skal vises.
+    const unsubscribe = onAuthStateChanged(auth, (nextUser) => {
+      setUser(nextUser);
+      setIsAuthLoading(false);
+    });
 
-  if (user === undefined) {
+    return unsubscribe;
+  }, []);
+
+  if (isAuthLoading) {
     return <View style={styles.loadingScreen}><ActivityIndicator color={COLORS.brand} size="large" /></View>;
   }
 
@@ -41,14 +51,15 @@ export default function AppNavigator() {
       {/* NavigationContainer holder styr på navigationens tilstand og skal omslutte alle navigators. */}
       <NavigationContainer>
         <Stack.Navigator
+          key={user?.uid ?? 'signed-out'}
           screenOptions={{
             headerShown: false, // Vi skjuler standard-headeren og bruger vores egen ScreenHeader.
             contentStyle: { backgroundColor: COLORS.background }, // Fælles baggrundsfarve på alle skærme.
             animation: 'slide_from_right', // Nye skærme glider ind fra højre.
           }}
         >
-          {/* "name" er det navn, vi bruger i navigation.navigate(...). */}
-          {/* "name" er det navn, vi bruger i navigation.navigate(...). */}
+          {/* Ruterne skiftes sammen med Firebase-sessionen. `key` ovenfor nulstiller
+              navigatoren, så en tidligere Login-skærm aldrig bliver hængende. */}
           {user ? (
             <>
               <Stack.Screen name="Game" component={GameScreen} />

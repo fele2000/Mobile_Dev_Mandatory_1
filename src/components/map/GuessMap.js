@@ -54,12 +54,6 @@ export default function GuessMap({
         onPress={handleLocationChange} // Almindeligt tryk sætter markøren.
         onLongPress={handleLocationChange} // Long-press sætter også markøren (opgavens krav).
       >
-        {/* Fast markør på KEA (standard rød pin). title/description vises i en boble ved tryk. */}
-        <Marker
-          coordinate={KEA_LOCATION}
-          title="KEA Guldbergsgade"
-          description="Guldbergsgade 29N, 2200 Copenhagen N"
-        />
 
         {/* Brugerens markør – vises kun, når der er et gæt (&& = "hvis venstre side er sand, vis højre"). */}
         {guess && (
@@ -74,7 +68,7 @@ export default function GuessMap({
           <Marker
             // Runden indeholder flere felter (id, imageUrl ...), så vi plukker kun koordinaterne ud.
             coordinate={{ latitude: answer.latitude, longitude: answer.longitude }}
-            title="Photo location"
+            title="Fotosted"
             pinColor="green"
           />
         )}
